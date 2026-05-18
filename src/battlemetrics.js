@@ -7,15 +7,10 @@ async function bmFetch(path, apiKey) {
 }
 
 export async function findPlayerBySteamId(steamId64, apiKey) {
-  const data = await bmFetch(`/players?filter[search]=${steamId64}&include=identifier`, apiKey);
-  const included = data.included ?? [];
-  const match = included.find(i => i.type === 'identifier' && i.attributes?.type === 'steamID' && i.attributes?.identifier === steamId64);
-  if (!match) return null;
-  const playerId = match.relationships?.player?.data?.id;
-  if (!playerId) return null;
-  const player = data.data.find(p => p.id === playerId);
+  const data = await bmFetch(`/players?filter[search]=${steamId64}`, apiKey);
+  const player = data.data?.[0];
   if (!player) return null;
-  return { id: playerId, name: player.attributes.name, profileUrl: `https://www.battlemetrics.com/players/${playerId}` };
+  return { id: player.id, name: player.attributes.name, profileUrl: `https://www.battlemetrics.com/players/${player.id}` };
 }
 
 export async function getRustBans(bmPlayerId, apiKey) {
