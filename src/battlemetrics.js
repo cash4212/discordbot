@@ -1,7 +1,7 @@
 const BASE_URL = 'https://api.battlemetrics.com';
 
 async function bmFetch(path, apiKey) {
-  const res = await fetch(`${BASE_URL}${path}`, { headers: { Authorization: `Bearer ${apiKey}` } });
+  const res = await fetch(`${BASE_URL}${path}`, { headers: { Authorization: `Bearer ${apiKey}`, 'User-Agent': 'rust-ban-checker-bot/1.0.0' } });
   if (!res.ok) { const text = await res.text(); throw new Error(`BattleMetrics ${res.status}: ${text}`); }
   return res.json();
 }
