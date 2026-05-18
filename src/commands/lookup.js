@@ -36,6 +36,6 @@ export async function execute(interaction) {
     await interaction.editReply({ embeds: [embed] });
   } catch (err) {
     console.error('Lookup error:', err);
-    await interaction.editReply({ content: `Error querying BattleMetrics: ${err.message}` });
+    await interaction.editReply({ content: `Debug error: ${err.message}` });
   }
 }

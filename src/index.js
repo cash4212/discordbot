@@ -22,7 +22,7 @@ client.on('interactionCreate', async (interaction) => {
     await command.execute(interaction);
   } catch (err) {
     console.error(err);
-    const reply = { content: 'An unexpected error occurred.', ephemeral: true };
+    const reply = { content: `An unexpected error occurred: ${err.message}`, ephemeral: true };
     if (interaction.deferred || interaction.replied) await interaction.editReply(reply).catch(() => {});
     else await interaction.reply(reply).catch(() => {});
   }
