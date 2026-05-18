@@ -7,7 +7,7 @@ async function bmFetch(path, apiKey) {
 }
 
 export async function findPlayerBySteamId(steamId64, apiKey) {
-  const data = await bmFetch(`/players?filter[search]=${steamId64}&filter[game]=rust&include=identifier`, apiKey);
+  const data = await bmFetch(`/players?filter[search]=${steamId64}&include=identifier`, apiKey);
   const included = data.included ?? [];
   const match = included.find(i => i.type === 'identifier' && i.attributes?.type === 'steamID' && i.attributes?.identifier === steamId64);
   if (!match) return null;
@@ -19,7 +19,7 @@ export async function findPlayerBySteamId(steamId64, apiKey) {
 }
 
 export async function getRustBans(bmPlayerId, apiKey) {
-  const data = await bmFetch(`/bans?filter[player]=${bmPlayerId}&filter[game]=rust&include=server&page[size]=10`, apiKey);
+  const data = await bmFetch(`/bans?filter[player]=${bmPlayerId}&include=server&page[size]=10`, apiKey);
   const servers = new Map((data.included ?? []).filter(i => i.type === 'server').map(s => [s.id, s.attributes.name]));
   return (data.data ?? []).map(ban => {
     const serverId = ban.relationships?.server?.data?.id;
